@@ -1,0 +1,106 @@
+using Gtk 4.0;
+using Adw 1;
+
+ScrolledWindow home {
+  hscrollbar-policy: never;
+  vexpand: true;
+
+  child: Adw.Clamp {
+    maximum-size: 760;
+    tightening-threshold: 560;
+
+    child: Box {
+      orientation: vertical;
+      spacing: 12;
+      valign: center;
+
+      styles [
+        "home-content",
+      ]
+
+      Image {
+        accessible-role: presentation;
+        icon-name: "accessories-dictionary-symbolic";
+        pixel-size: 48;
+        margin-bottom: 8;
+
+        styles [
+          "home-emblem",
+        ]
+      }
+
+      Label {
+        label: _("图书馆查询");
+
+        styles [
+          "home-title",
+        ]
+      }
+
+      Label campus {
+        wrap: true;
+        margin-bottom: 20;
+
+        styles [
+          "dim-label",
+        ]
+      }
+
+      Entry query {
+        placeholder-text: _("输入书名…");
+        primary-icon-name: "system-search-symbolic";
+
+        styles [
+          "home-search",
+        ]
+
+        accessibility {
+          label: _("搜索馆藏");
+        }
+      }
+
+      Button search {
+        label: _("搜索馆藏");
+        halign: end;
+        height-request: 40;
+        margin-bottom: 16;
+
+        styles [
+          "suggested-action",
+          "pill",
+        ]
+      }
+
+      FlowBox links {
+        selection-mode: none;
+        homogeneous: true;
+        min-children-per-line: 1;
+        max-children-per-line: 2;
+        row-spacing: 8;
+        column-spacing: 8;
+      }
+
+      Button help {
+        label: _("Ctrl + 空格切换输入法 · 使用帮助");
+        halign: center;
+        margin-top: 20;
+
+        styles [
+          "flat",
+          "home-footer",
+        ]
+      }
+
+      Label {
+        label: _("使用完毕，请点击右上角“结束使用”清理本机浏览数据。");
+        wrap: true;
+        justify: center;
+
+        styles [
+          "dim-label",
+          "home-footer",
+        ]
+      }
+    };
+  };
+}

@@ -1,0 +1,10 @@
+[Desktop Entry]
+Type=Application
+Name=LIIMS Browser
+Name[zh_CN]=图书馆查询
+Comment=Library inquiry terminal
+Exec=liims-browser
+Icon=accessories-dictionary
+Terminal=false
+Categories=Network;WebBrowser;
+StartupNotify=true

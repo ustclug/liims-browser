@@ -1,0 +1,10 @@
+.home-content { padding: 36px 24px; }
+.home-emblem { color: var(--accent-color); }
+.home-title { font-size: 28px; font-weight: 700; }
+.home-search { min-height: 44px; border-radius: 12px; padding: 0 12px; }
+.home-card { padding: 20px; border-radius: 12px; }
+.home-card image { color: var(--accent-color); }
+.home-footer { font-size: 13px; }
+.location { min-height: 34px; border-radius: 8px; }
+.search-suggestion { padding: 6px 12px; }
+.end-session { font-weight: 600; }

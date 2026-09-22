@@ -1,0 +1,19 @@
+[Unit]
+Description=LIIMS inquiry browser
+PartOf=graphical-session.target
+After=graphical-session-pre.target
+StartLimitIntervalSec=60
+StartLimitBurst=5
+
+[Service]
+Type=simple
+Environment=GDK_BACKEND=wayland
+EnvironmentFile=-%h/.config/systemd/XENV
+ExecStart=/usr/bin/liims-browser
+Restart=always
+RestartSec=2
+KillMode=control-group
+TimeoutStopSec=5
+
+[Install]
+WantedBy=graphical-session.target

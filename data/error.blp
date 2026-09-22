@@ -1,0 +1,13 @@
+using Gtk 4.0;
+using Adw 1;
+
+Adw.StatusPage error {
+  icon-name: "network-error-symbolic";
+  child: Box {
+    orientation: horizontal;
+    spacing: 12;
+    halign: center;
+    Button retry { label: _("重试"); styles ["suggested-action"] }
+    Button { label: _("回首页"); action-name: "win.home"; }
+  };
+}

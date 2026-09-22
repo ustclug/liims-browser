@@ -1,0 +1,17 @@
+using Gtk 4.0;
+
+Button card {
+  hexpand: true;
+  accessibility { labelled-by: title; described-by: description; }
+  styles ["card", "home-card"]
+  child: Box {
+    spacing: 16;
+    Image icon { pixel-size: 28; accessible-role: presentation; }
+    Box {
+      orientation: vertical;
+      spacing: 6;
+      Label title { xalign: 0; styles ["heading"] }
+      Label description { xalign: 0; wrap: true; styles ["dim-label"] }
+    }
+  };
+}

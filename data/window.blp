@@ -1,0 +1,145 @@
+using Gtk 4.0;
+using Adw 1;
+
+Adw.ApplicationWindow window {
+  title: _("图书馆查询");
+  default-width: 1100;
+  default-height: 780;
+
+  Adw.Breakpoint {
+    condition ("max-width: 899px")
+    setters { tab_bar.visible: false; }
+  }
+
+  content: Adw.ToastOverlay toast {
+    child: Adw.TabOverview overview {
+      view: tabs;
+      enable-new-tab: true;
+      show-start-title-buttons: false;
+      show-end-title-buttons: false;
+
+      child: Adw.ToolbarView {
+        [top]
+        Adw.HeaderBar header {
+          show-start-title-buttons: false;
+          show-end-title-buttons: false;
+
+          Button back {
+            icon-name: "go-previous-symbolic";
+            tooltip-text: _("后退 (Alt+←)");
+            action-name: "win.back";
+          }
+          Button forward {
+            icon-name: "go-next-symbolic";
+            tooltip-text: _("前进 (Alt+→)");
+            action-name: "win.forward";
+          }
+          Button reload {
+            icon-name: "view-refresh-symbolic";
+            tooltip-text: _("刷新 (Ctrl+R)");
+            action-name: "win.reload";
+          }
+          Button {
+            icon-name: "go-home-symbolic";
+            tooltip-text: _("回首页（保留本次会话）");
+            action-name: "win.home";
+          }
+
+          title-widget: Entry location {
+            hexpand: true;
+            width-chars: 20;
+            placeholder-text: _("输入网址或搜索馆藏…");
+            styles ["location"]
+            accessibility { label: _("网址或馆藏搜索"); }
+          };
+
+          [end]
+          MenuButton {
+            icon-name: "open-menu-symbolic";
+            menu-model: main_menu;
+            tooltip-text: _("菜单");
+          }
+          [end]
+          Button {
+            label: _("结束使用");
+            action-name: "win.end-session";
+            styles ["end-session"]
+          }
+          [end]
+          Adw.TabButton {
+            view: tabs;
+            action-name: "win.overview";
+            tooltip-text: _("所有标签");
+          }
+        }
+
+        [top]
+        Label suggestion {
+          xalign: 0;
+          visible: false;
+          ellipsize: end;
+          styles ["dim-label", "search-suggestion"]
+        }
+        [top]
+        Adw.TabBar tab_bar {
+          view: tabs;
+          autohide: true;
+          end-action-widget: Button {
+            icon-name: "tab-new-symbolic";
+            tooltip-text: _("新建标签 (Ctrl+T)");
+            action-name: "win.new-tab";
+          };
+        }
+        [top]
+        ProgressBar progress { visible: false; }
+        [top]
+        Adw.Banner hint_banner {
+          title: _("按 Ctrl + 空格激活输入法；可通过桌面输入法按钮切换输入法。");
+          button-label: _("知道了");
+        }
+        [top]
+        SearchBar find_bar {
+          show-close-button: true;
+          child: Box {
+            spacing: 6;
+            SearchEntry find_entry {
+              placeholder-text: _("在此页面查找…");
+              hexpand: true;
+            }
+            Button {
+              icon-name: "go-up-symbolic";
+              tooltip-text: _("上一个结果");
+              action-name: "win.find-previous";
+            }
+            Button {
+              icon-name: "go-down-symbolic";
+              tooltip-text: _("下一个结果");
+              action-name: "win.find-next";
+            }
+          };
+        }
+
+        content: Adw.TabView tabs {};
+
+        [bottom]
+        Adw.Banner idle_banner { button-label: _("继续使用"); }
+      };
+    };
+  };
+}
+
+menu main_menu {
+  section {
+    item { label: _("新建标签"); action: "win.new-tab"; }
+    item { label: _("页内查找"); action: "win.find"; }
+  }
+  section {
+    item { label: _("放大"); action: "win.zoom-in"; }
+    item { label: _("缩小"); action: "win.zoom-out"; }
+    item { label: _("实际大小"); action: "win.zoom-reset"; }
+  }
+  section {
+    item { label: _("使用帮助"); action: "win.help"; }
+    item { label: _("关于"); action: "win.about"; }
+  }
+}

@@ -1,0 +1,70 @@
+idle_seconds = 60
+warning_seconds = 15
+
+[profiles.default]
+name = "中国科学技术大学"
+search_url = "http://opac.lib.ustc.edu.cn/opac/openlink.php?title=%s&with_ebook=on"
+
+[[profiles.default.links]]
+title = "馆藏高级检索"
+description = "按作者、主题等条件查找"
+icon = "system-search-symbolic"
+url = "http://opac.lib.ustc.edu.cn/opac/search_adv.php"
+
+[[profiles.default.links]]
+title = "科大邮箱"
+description = "收发邮件"
+icon = "mail-unread-symbolic"
+url = "https://email.ustc.edu.cn/"
+
+[[profiles.default.links]]
+title = "图书馆主页"
+description = "资源与服务"
+icon = "accessories-dictionary-symbolic"
+url = "http://lib.ustc.edu.cn/"
+
+[[profiles.default.links]]
+title = "学习空间预约"
+description = "查看预约入口"
+icon = "x-office-calendar-symbolic"
+url = "http://lib.ustc.edu.cn/图书馆研修间预约系统/"
+
+[profiles.iat]
+name = "中国科学技术大学 · 先进技术研究院"
+search_url = "http://iat.lib.ustc.edu.cn/opac/openlink.php?title=%s&with_ebook=on"
+
+[[profiles.iat.links]]
+title = "馆藏高级检索"
+description = "先研院图书馆"
+icon = "system-search-symbolic"
+url = "http://iat.lib.ustc.edu.cn/opac/search.php"
+
+[[profiles.iat.links]]
+title = "先研院主页"
+description = "学院信息与服务"
+icon = "go-home-symbolic"
+url = "http://iat.ustc.edu.cn/"
+
+# Exact host and path-prefix matching. The prompt is shown once per session.
+[[site_rules]]
+host = "opac.lib.ustc.edu.cn"
+path_prefix = "/opac/"
+input_hint = true
+
+[[site_rules]]
+host = "iat.lib.ustc.edu.cn"
+path_prefix = "/opac/"
+input_hint = true
+
+[[site_rules]]
+host = "lib.ustc.edu.cn"
+path_prefix = "/LIIMS"
+input_hint = true
+
+[[site_rules]]
+host = "email.ustc.edu.cn"
+input_hint = true
+
+[[site_rules]]
+host = "mail.ustc.edu.cn"
+input_hint = true

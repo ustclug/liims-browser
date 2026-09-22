@@ -1,0 +1,8 @@
+using Gtk 4.0;
+using Adw 1;
+
+Adw.PreferencesGroup credentials {
+  title: _("网站账号");
+  Adw.EntryRow username { title: _("用户名"); }
+  Adw.PasswordEntryRow password { title: _("密码"); }
+}
