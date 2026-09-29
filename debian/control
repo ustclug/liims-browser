@@ -17,7 +17,10 @@ Homepage: https://github.com/ustclug/liims-browser
 
 Package: liims-browser
 Architecture: any
-Depends: ${shlibs:Depends}, ${misc:Depends}
+Depends: ${shlibs:Depends},
+ ${misc:Depends},
+ adwaita-icon-theme,
+ librsvg2-common
 Description: LIIMS public inquiry browser
  Native GTK4 and libadwaita browser with ephemeral reading sessions
  for library inquiry terminals.
