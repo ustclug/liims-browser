@@ -1,0 +1,54 @@
+name: Debian release
+
+on:
+  push:
+    tags:
+      - '**'
+
+permissions:
+  contents: write
+
+concurrency:
+  group: debian-release-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  release:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          persist-credentials: false
+
+      - name: Build and test Debian 13 packages
+        env:
+          DOCKER_BUILDKIT: '1'
+        run: |
+          docker build --file packaging/Containerfile.debian \
+            --output type=local,dest=build-output .
+
+      - name: Inspect packages and generate checksums
+        working-directory: build-output/out
+        run: |
+          for package in *.deb; do
+            dpkg-deb --info "$package"
+          done
+          sha256sum *.deb *.buildinfo *.changes > SHA256SUMS
+          sha256sum --check SHA256SUMS
+
+      - name: Publish GitHub Release
+        working-directory: build-output/out
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+          RELEASE_TAG: ${{ github.ref_name }}
+        run: |
+          if gh release view "$RELEASE_TAG" > /dev/null 2>&1; then
+            gh release upload "$RELEASE_TAG" \
+              *.deb *.buildinfo *.changes SHA256SUMS --clobber
+          else
+            gh release create "$RELEASE_TAG" \
+              *.deb *.buildinfo *.changes SHA256SUMS \
+              --verify-tag --generate-notes --title "$RELEASE_TAG"
+          fi

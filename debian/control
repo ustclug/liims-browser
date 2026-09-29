@@ -1,0 +1,23 @@
+Source: liims-browser
+Section: web
+Priority: optional
+Maintainer: LIIMS maintainers <lug@ustc.edu.cn>
+Build-Depends: debhelper-compat (= 13),
+ rustc (>= 1.92),
+ cargo (>= 1.92),
+ build-essential,
+ pkg-config,
+ blueprint-compiler,
+ libgtk-4-dev (>= 4.18),
+ libadwaita-1-dev (>= 1.7),
+ libwebkitgtk-6.0-dev (>= 2.48)
+Standards-Version: 4.7.2
+Rules-Requires-Root: no
+Homepage: https://github.com/ustclug/liims-browser
+
+Package: liims-browser
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}
+Description: LIIMS public inquiry browser
+ Native GTK4 and libadwaita browser with ephemeral reading sessions
+ for library inquiry terminals.

@@ -17,13 +17,17 @@ cargo build --locked
 cargo run --locked -- --windowed
 ```
 
-Debian 13 开发库：
+Debian 13 使用 `trixie-backports` 提供的 Rust 工具链，开发库使用稳定版仓库：
 
 ```sh
+echo 'deb http://deb.debian.org/debian trixie-backports main' | sudo tee /etc/apt/sources.list.d/backports.list
+sudo apt update
 sudo apt install build-essential pkg-config blueprint-compiler libgtk-4-dev libadwaita-1-dev libwebkitgtk-6.0-dev
+sudo apt install -t trixie-backports rustc cargo
+cargo build --locked
 ```
 
-Debian 自带 Rust 可能低于所需版本；使用 Rust 1.92+ 工具链，或通过容器构建：
+也可以通过容器构建。容器以 Debian 13 为基础，同样从 backports 安装 Rust：
 
 ```sh
 podman build -f packaging/Containerfile.debian -t liims-browser-debian .
@@ -31,6 +35,31 @@ container=$(podman create liims-browser-debian /unused)
 podman cp "$container:/out" ./dist
 podman rm "$container"
 ```
+
+### Debian 13 软件包
+
+容器构建会运行单元测试，通过 `debian/` 中的 debhelper 规则生成 `.deb`、
+调试符号包、`.buildinfo` 和 `.changes`，并导出到 `dist/`。
+动态库依赖由 `dpkg-shlibdeps` 自动生成；构建需要联网下载镜像、APT 和 Cargo 依赖。
+
+也可以在 Debian 13 上完成上述开发环境安装后直接打包：
+
+```sh
+sudo apt install debhelper python3
+make deb
+sudo apt install ./dist/liims-browser_0.1.0-1_$(dpkg --print-architecture).deb
+```
+
+`make deb` 使用 `dpkg-buildpackage --build=binary --no-sign`，构建产物同时保留在
+源码目录的上一级。更新版本时需同步 `Cargo.toml` 和 `debian/changelog`。
+`debian/control` 声明了 Rust 1.92+ 的构建依赖，需先按上述步骤从 backports 安装。
+如果同时安装了 rustup，请确认 `cargo --version` 和 `rustc --version` 均不低于 1.92。
+此流程用于自行部署的二进制包。
+
+推送 tag 后，GitHub Actions 会构建 Debian 13 的 amd64 软件包并运行单元测试，
+随后创建对应的 GitHub Release，上传 `.deb`（含调试符号包）、构建记录和
+`SHA256SUMS`。重新运行同一 tag 的工作流会替换同名附件。
+发布前需更新 `Cargo.toml` 和 `debian/changelog` 中的版本，再推送相应 tag（如 `v0.1.0`）。
 
 默认启动为最大化查询窗口；`--windowed` 显示常规窗口按钮。
 可以用 `--url https://example.org` 直接打开网页进行兼容性验证。

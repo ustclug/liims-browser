@@ -1,7 +1,11 @@
 PREFIX ?= /usr
 DESTDIR ?=
+.DEFAULT_GOAL := build
 
-.PHONY: build test check install
+.PHONY: build test check install deb
+deb:
+	python3 scripts/package-deb.py
+
 build:
 	cargo build --release --locked
 

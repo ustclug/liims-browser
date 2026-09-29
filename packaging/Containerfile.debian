@@ -1,17 +1,21 @@
-FROM docker.io/library/rust:1.92.0-trixie AS build
-RUN apt-get update && apt-get install -y --no-install-recommends \
-    build-essential pkg-config blueprint-compiler python3 \
+FROM docker.io/library/debian:13 AS build
+RUN printf '%s\n' 'deb http://deb.debian.org/debian trixie-backports main' \
+    > /etc/apt/sources.list.d/backports.list \
+    && apt-get update \
+    && apt-get install -y --no-install-recommends \
+    ca-certificates build-essential debhelper pkg-config blueprint-compiler python3 \
     libgtk-4-dev libadwaita-1-dev libwebkitgtk-6.0-dev \
+    && apt-get install -y --no-install-recommends -t trixie-backports rustc cargo \
     && rm -rf /var/lib/apt/lists/*
 WORKDIR /src
 COPY Cargo.toml Cargo.lock build.rs ./
 COPY data/ data/
 COPY src/ src/
 COPY packaging/ packaging/
+COPY debian/ debian/
 COPY scripts/package-deb.py scripts/package-deb.py
 COPY Makefile ./
-RUN cargo build --release --locked && cargo test --locked \
-    && python3 scripts/package-deb.py
+RUN python3 scripts/package-deb.py
 
 FROM scratch
 COPY --from=build /src/dist/ /out/
