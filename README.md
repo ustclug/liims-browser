@@ -47,7 +47,6 @@ podman rm "$container"
 ```sh
 sudo apt install debhelper python3
 make deb
-sudo apt install ./dist/liims-browser_0.1.0-1_$(dpkg --print-architecture).deb
 ```
 
 `make deb` 使用 `dpkg-buildpackage --build=binary --no-sign`，构建产物同时保留在

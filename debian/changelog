@@ -1,5 +1,11 @@
+liims-browser (0.1.0-2) trixie; urgency=medium
+
+  * Add necessary dependencies for showing icons.
+
+ -- taoky <taoky@ustclug.org>  Wed, 30 Sep 2026 07:45:20 +0000
+
 liims-browser (0.1.0-1) trixie; urgency=medium
 
   * Package for Debian 13.
 
- -- LIIMS maintainers <lug@ustc.edu.cn>  Tue, 29 Sep 2026 19:00:00 +0800
+ -- taoky <taoky@ustclug.org>  Tue, 29 Sep 2026 19:00:00 +0800

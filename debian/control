@@ -1,7 +1,7 @@
 Source: liims-browser
 Section: web
 Priority: optional
-Maintainer: LIIMS maintainers <lug@ustc.edu.cn>
+Maintainer: taoky <taoky@ustclug.org>
 Build-Depends: debhelper-compat (= 13),
  rustc (>= 1.92),
  cargo (>= 1.92),
