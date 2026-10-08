@@ -1,6 +1,8 @@
 # LIIMS Browser
 
-为公共图书查询终端（Debian）开发的 Rust + GTK4/libadwaita 浏览器，使用 WebKitGTK，替代原来的[魔改版 Midori](https://github.com/taoky/midori)。
+为科大图书馆查询机定制的简洁、美观的 WebKit 浏览器。基于 Rust + GTK4 + Libadwaita。替代原来的[魔改版 Midori](https://github.com/taoky/midori)。
+
+![Screenshot](assets/screenshot.png)
 
 ## 构建与运行
 
@@ -9,6 +11,7 @@
 ### Arch Linux
 
 ```sh
+# rust, or use rustup to install latest Rust.
 sudo pacman -S --needed base-devel rust pkgconf gtk4 libadwaita webkitgtk-6.0 blueprint-compiler
 cargo build --locked
 cargo run --locked -- --windowed
@@ -16,7 +19,7 @@ cargo run --locked -- --windowed
 
 ### Debian 13
 
-Debian 13 使用 `trixie-backports` 提供的 Rust 工具链，开发库使用稳定版仓库：
+Debian 13 使用 `trixie-backports` 提供的 Rust 工具链（测试开发也可以用 rustup 安装最新 Rust），开发库使用稳定版仓库：
 
 ```sh
 echo 'deb http://deb.debian.org/debian trixie-backports main' | sudo tee /etc/apt/sources.list.d/backports.list
@@ -51,7 +54,7 @@ make deb
 
 `debian/control` 声明了 Rust 1.92+ 的构建依赖，需先按上述步骤从 backports 安装。如果同时安装了 rustup，请确认 `cargo --version` 和 `rustc --version` 均不低于 1.92。
 
-默认启动为最大化查询窗口；`--windowed` 显示常规窗口按钮。可以用 `--url https://example.org` 直接打开网页进行兼容性验证。
+默认启动为最大化查询窗口；`--windowed` 显示常规窗口按钮。支持指定启动的 URL：`--url https://example.org`。
 
 ## 配置
 
@@ -98,7 +101,7 @@ GUI 测试在独立 D-Bus 会话中启动虚拟显示器和 Weston，并用原�
 
 `make install DESTDIR=/path/to/staging` 将程序、配置、桌面入口和用户服务安装到暂存目录。Debian 容器构建输出 `.deb` 与二进制；包将 `/etc/liims/browser.toml` 标记为配置文件。服务不会由安装脚本自动启动。
 
-Wayland 桌面会话应导入 `WAYLAND_DISPLAY` 等环境并管理 `graphical-session.target`。部署时将原启动入口与面板的浏览器重启命令改为 `liims-browser.service`。
+Wayland 桌面会话应导入 `WAYLAND_DISPLAY` 等环境并管理 `graphical-session.target`。部署时将原启动入口与面板的浏览器重启命令改为 `liims-browser.service`。可参考 [liimstrap](https://github.com/ustclug/liimstrap) 仓库。
 
 ## 代码结构
 
@@ -108,4 +111,4 @@ Wayland 桌面会话应导入 `WAYLAND_DISPLAY` 等环境并管理 `graphical-se
 - `src/home.rs`：校区入口和搜索行为。
 - `src/config.rs`、`navigation.rs`、`session.rs`：配置、地址解析及独立可测试的空闲状态机。
 
-请保持界面结构在 Blueprint 中，避免在 Rust 里堆叠静态控件布局。
+UI 由 Blueprint（而非 GTK 传统的 XML 或在 Rust 代码中直接堆）定义。
